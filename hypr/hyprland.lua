@@ -226,7 +226,7 @@ hl.bind("SUPER + ALT + SLASH", script("monitor-scaling.sh", "down"), { descripti
 -- utilities
 -- ────────────────────────────────────────────────────────────
     hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs ipc call launcher toggle"), { description = "Launcher" })
-hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("qs -c bar ipc call powermenu toggle"), { description = "Power menu" })
+hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("qs ipc call powermenu toggle"), { description = "Power menu" })
 hl.bind("SUPER + SHIFT + SPACE", script("bar-toggle.sh"), { description = "Toggle top bar" })
 
 hl.bind("SUPER + CTRL + L", script("system-lock.sh"), { locked = true, description = "Lock system" })

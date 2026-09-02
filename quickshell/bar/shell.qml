@@ -16,6 +16,7 @@ ShellRoot {
     // ── behaviour ──────────────────────────────────────────
     property bool useWalker: false
     property bool launcherOpen: false
+    property bool powerOpen: false
     property string openPanel: ""   // "cal" | "wifi" | "bt" | "bri" | "bat" | "notif" | "rem"
 
     readonly property int round: 5   // 5px rounding — everywhere, always
@@ -42,6 +43,11 @@ ShellRoot {
     readonly property string iMoon:   "\uf186"
     readonly property string iLock:   "\uf023"
     readonly property string iCheck:  "\uf00c"
+    readonly property string iPower:  "\uf011"
+    readonly property string iReboot: "\uf021"
+    readonly property string iSleep:  "\uf186"
+    readonly property string iLogout: "\uf08b"
+    readonly property string iHibernate: "\uf2db"
 
     // ── state ──────────────────────────────────────────────
     property bool btPowered: false
@@ -175,6 +181,13 @@ ShellRoot {
         target: "launcher"
         function toggle(): void {
             root.launcherOpen = !root.launcherOpen;
+        }
+    }
+
+    IpcHandler {
+        target: "powermenu"
+        function toggle(): void {
+            root.powerOpen = !root.powerOpen;
         }
     }
 
@@ -1255,6 +1268,144 @@ ShellRoot {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // ══ POWER MENU — centered ══════════════════════════════════
+    PanelWindow {
+        id: powerWin
+        visible: root.powerOpen
+        exclusionMode: ExclusionMode.Ignore
+        anchors { top: true; left: true; right: true; bottom: true }
+        color: "transparent"
+        WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.keyboardFocus: WlrKeyboardFocus.OnDemand
+
+        Item {
+            anchors.fill: parent
+            focus: true
+            Keys.onEscapePressed: root.powerOpen = false
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            color: "#88000000"
+            opacity: powerWin.visible ? 1 : 0
+            Behavior on opacity { NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
+            MouseArea { anchors.fill: parent; onClicked: root.powerOpen = false }
+        }
+
+        Rectangle {
+            width: 260; height: 220
+            anchors.centerIn: parent
+            radius: root.round
+            color: root.bg; border.color: root.borderCol; border.width: 1
+            opacity: powerWin.visible ? 1 : 0
+            Behavior on opacity { NumberAnimation { duration: 120; easing.type: Easing.OutQuad } }
+
+            ColumnLayout {
+                anchors.fill: parent
+                anchors.margins: 16
+                spacing: 10
+
+                Text { text: "POWER"; color: root.dim
+                    font { family: root.fontName; pixelSize: 10; letterSpacing: 2 }
+                    Layout.alignment: Qt.AlignHCenter }
+
+                Item { Layout.fillHeight: true }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+
+                    Rectangle {
+                        Layout.fillWidth: true; height: 50; radius: root.round
+                        color: psleepMa.containsMouse ? root.bgLight : "transparent"
+                        Behavior on color { ColorAnimation { duration: 100 } }
+                        ColumnLayout {
+                            anchors.centerIn: parent; spacing: 4
+                            Text { text: root.iSleep; font.family: root.fontName; font.pixelSize: 16
+                                color: root.fg; Layout.alignment: Qt.AlignHCenter }
+                            Text { text: "sleep"; font.family: root.fontName; font.pixelSize: 9
+                                color: root.dim; Layout.alignment: Qt.AlignHCenter }
+                        }
+                        MouseArea { id: psleepMa; anchors.fill: parent; hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: { root.powerOpen = false; Quickshell.exec(["systemctl", "suspend"]); } }
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true; height: 50; radius: root.round
+                        color: plogMa.containsMouse ? root.bgLight : "transparent"
+                        Behavior on color { ColorAnimation { duration: 100 } }
+                        ColumnLayout {
+                            anchors.centerIn: parent; spacing: 4
+                            Text { text: root.iLogout; font.family: root.fontName; font.pixelSize: 16
+                                color: root.fg; Layout.alignment: Qt.AlignHCenter }
+                            Text { text: "logout"; font.family: root.fontName; font.pixelSize: 9
+                                color: root.dim; Layout.alignment: Qt.AlignHCenter }
+                        }
+                        MouseArea { id: plogMa; anchors.fill: parent; hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: { root.powerOpen = false; Quickshell.exec(["loginctl", "terminate-user", Quickshell.env("USER")]); } }
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+
+                    Rectangle {
+                        Layout.fillWidth: true; height: 50; radius: root.round
+                        color: phibMa.containsMouse ? root.bgLight : "transparent"
+                        Behavior on color { ColorAnimation { duration: 100 } }
+                        ColumnLayout {
+                            anchors.centerIn: parent; spacing: 4
+                            Text { text: root.iHibernate; font.family: root.fontName; font.pixelSize: 16
+                                color: root.fg; Layout.alignment: Qt.AlignHCenter }
+                            Text { text: "hibernate"; font.family: root.fontName; font.pixelSize: 9
+                                color: root.dim; Layout.alignment: Qt.AlignHCenter }
+                        }
+                        MouseArea { id: phibMa; anchors.fill: parent; hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: { root.powerOpen = false; Quickshell.exec(["systemctl", "hibernate"]); } }
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true; height: 50; radius: root.round
+                        color: prebootMa.containsMouse ? root.bgLight : "transparent"
+                        Behavior on color { ColorAnimation { duration: 100 } }
+                        ColumnLayout {
+                            anchors.centerIn: parent; spacing: 4
+                            Text { text: root.iReboot; font.family: root.fontName; font.pixelSize: 16
+                                color: root.fg; Layout.alignment: Qt.AlignHCenter }
+                            Text { text: "reboot"; font.family: root.fontName; font.pixelSize: 9
+                                color: root.dim; Layout.alignment: Qt.AlignHCenter }
+                        }
+                        MouseArea { id: prebootMa; anchors.fill: parent; hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
+                            onClicked: { root.powerOpen = false; Quickshell.exec(["systemctl", "reboot"]); } }
+                    }
+                }
+
+                Rectangle {
+                    Layout.fillWidth: true; height: 50; radius: root.round
+                    color: poffMa.containsMouse ? "#5c2030" : "transparent"
+                    Behavior on color { ColorAnimation { duration: 100 } }
+                    RowLayout {
+                        anchors.centerIn: parent; spacing: 8
+                        Text { text: root.iPower; font.family: root.fontName; font.pixelSize: 16
+                            color: root.red }
+                        Text { text: "shutdown"; font.family: root.fontName; font.pixelSize: 11
+                            color: root.red }
+                    }
+                    MouseArea { id: poffMa; anchors.fill: parent; hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: { root.powerOpen = false; Quickshell.exec(["systemctl", "poweroff"]); } }
+                }
+
+                Item { Layout.fillHeight: true }
             }
         }
     }
