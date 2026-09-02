@@ -1,0 +1,9 @@
+#!/bin/bash
+# Launch Pyramid screensaver in kitty (like Omarchy)
+if ! command -v ~/.local/bin/tte &>/dev/null && ! command -v tte &>/dev/null; then
+  exit 1
+fi
+pgrep -f org.pyramid.screensaver && exit 0
+
+# kitty is available on this system
+hyprctl dispatch exec -- kitty --class=org.pyramid.screensaver --override font_size=18 --override window_padding_width=0 -e ~/.local/bin/pyramid-screensaver

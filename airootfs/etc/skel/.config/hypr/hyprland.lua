@@ -81,8 +81,12 @@ hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "al
 hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" })
 
--- autostart
-hl.dsp.exec_cmd("quickshell -c bar")
+-- autostart (exec-once: runs only on Hyprland start, not every reload)
+hl.on("hyprland.start", function()
+    hl.exec_cmd("quickshell -c bar")
+    hl.exec_cmd("hyprpaper")
+    hl.exec_cmd("hypridle")
+end)
 
 local HOME = os.getenv("HOME")
 local bin = HOME .. "/.config/hypr/scripts/"
@@ -98,7 +102,7 @@ hl.bind("SUPER + RETURN", hl.dsp.exec_cmd("kitty"), { description = "Terminal" }
 hl.bind("SUPER + SHIFT + RETURN", hl.dsp.exec_cmd("helium-browser"), { description = "Browser" })
 hl.bind("SUPER + SHIFT + B", hl.dsp.exec_cmd("helium-browser"), { description = "Browser" })
 hl.bind("SUPER + SHIFT + ALT + B", hl.dsp.exec_cmd("helium-browser --incognito"), { description = "Browser (private)" })
-hl.bind("SUPER + SHIFT + F", hl.dsp.exec_cmd("nautilus"), { description = "File manager" })
+hl.bind("SUPER + SHIFT + F", hl.dsp.exec_cmd("nautilus --new-window"), { description = "File manager" })
 hl.bind("SUPER + ALT + SHIFT + F", script("open-cwd.sh"), { description = "File manager (cwd)" })
 
 -- Web apps
@@ -222,7 +226,8 @@ hl.bind("SUPER + ALT + SLASH", script("monitor-scaling.sh", "down"), { descripti
 -- ────────────────────────────────────────────────────────────
 -- utilities
 -- ────────────────────────────────────────────────────────────
-hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("quickshell cmd launcher"), { description = "Launcher" })
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs -c bar ipc call launcher toggle"), { description = "Launcher" })
+hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("qs -c bar ipc call powermenu toggle"), { description = "Power menu" })
 hl.bind("SUPER + SHIFT + SPACE", script("bar-toggle.sh"), { description = "Toggle top bar" })
 
 hl.bind("SUPER + CTRL + L", script("system-lock.sh"), { locked = true, description = "Lock system" })
