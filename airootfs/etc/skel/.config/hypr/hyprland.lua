@@ -85,7 +85,6 @@ hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" 
 hl.on("hyprland.start", function()
     hl.exec_cmd("quickshell -c bar")
     hl.exec_cmd("hyprpaper")
-    hl.exec_cmd("hypridle")
 end)
 
 local HOME = os.getenv("HOME")

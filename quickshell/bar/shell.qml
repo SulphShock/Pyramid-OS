@@ -267,6 +267,15 @@ ShellRoot {
         { label: "Shutdown",  icon: root.iPower,    desc: "Power off",                  cmd: "systemctl poweroff" }
     ]
 
+    // ── desktop entries (custom loader) ────────────────────
+    property var apps: []
+    Process {
+        id: desktopProc
+        command: ["sh", "-c", homeDir + "/.local/bin/desktop-entries-json.sh"]
+        stdout: SplitParser { onRead: data => { try { root.apps = JSON.parse(data); } catch(e) {} } }
+        running: true
+    }
+
     Process { 
         id: powerAction
         property string cmd: ""
@@ -2349,7 +2358,7 @@ ShellRoot {
 
         readonly property var results: {
             const q = search.text.toLowerCase().trim();
-            const all = DesktopEntries.applications.values.filter(e => !e.noDisplay);
+            const all = root.apps.filter(e => !e.noDisplay);
             const list = q ? all.filter(e =>
                 (e.name || "").toLowerCase().includes(q) ||
                 (e.genericName || "").toLowerCase().includes(q) ||
@@ -2378,7 +2387,7 @@ ShellRoot {
             search.forceActiveFocus();
             // Load favorites
             const favs = [];
-            for (const app of DesktopEntries.applications.values) {
+            for (const app of root.apps) {
                 if (root.favorites.includes(app.id)) favs.push(app);
             }
             // You could filter/sort these differently
@@ -2468,7 +2477,7 @@ ShellRoot {
                             RowLayout {
                                 anchors.fill: parent; anchors.leftMargin: 10; anchors.rightMargin: 10; spacing: 10
                                 IconImage { 
-                                    source: modelData.icon ? Quickshell.iconPath(modelData.icon) : ""
+                                    source: modelData.icon ? (modelData.icon.charAt(0) === "/" ? "file://" + modelData.icon : Quickshell.iconPath(modelData.icon)) : ""
                                     width: 24; height: 24; smooth: true; Layout.alignment: Qt.AlignVCenter 
                                 }
                                 ColumnLayout {
