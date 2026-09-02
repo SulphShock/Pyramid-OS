@@ -269,10 +269,17 @@ ShellRoot {
 
     // ── desktop entries (custom loader) ────────────────────
     property var apps: []
+    property string desktopJson: ""
     Process {
         id: desktopProc
         command: ["sh", "-c", homeDir + "/.local/bin/desktop-entries-json.sh"]
-        stdout: SplitParser { onRead: data => { try { root.apps = JSON.parse(data); } catch(e) {} } }
+        stdout: StdioCollector {
+            onStreamFinished: {
+                root.desktopJson = this.text;
+                try { root.apps = JSON.parse(root.desktopJson); } catch(e) {}
+                console.log("[PYRAMID] Loaded " + root.apps.length + " desktop entries");
+            }
+        }
         running: true
     }
 
@@ -532,6 +539,10 @@ ShellRoot {
         remLoadProc.running = true; 
         volRefresh.running = true;
         log("Bar initialized");
+        console.log("[PYRAMID] apps loaded: " + root.apps.length);
+        if (root.apps.length > 0) {
+            console.log("[PYRAMID] first app: " + root.apps[0].name + " icon: " + root.apps[0].icon);
+        }
     }
 
     Timer {
