@@ -1,6 +1,6 @@
 -- Pyramid OS Hyprland configuration
 
-local terminal = "kitty"
+local terminal = "ghostty"
 local mainMod = "SUPER"
 
 hl.monitor({
@@ -97,7 +97,7 @@ end
 -- ────────────────────────────────────────────────────────────
 -- applications
 -- ────────────────────────────────────────────────────────────
-hl.bind("SUPER + RETURN", hl.dsp.exec_cmd("kitty"), { description = "Terminal" })
+hl.bind("SUPER + RETURN", hl.dsp.exec_cmd(terminal), { description = "Terminal" })
 hl.bind("SUPER + SHIFT + RETURN", hl.dsp.exec_cmd("helium-browser"), { description = "Browser" })
 hl.bind("SUPER + SHIFT + B", hl.dsp.exec_cmd("helium-browser"), { description = "Browser" })
 hl.bind("SUPER + SHIFT + ALT + B", hl.dsp.exec_cmd("helium-browser --incognito"), { description = "Browser (private)" })
@@ -225,7 +225,7 @@ hl.bind("SUPER + ALT + SLASH", script("monitor-scaling.sh", "down"), { descripti
 -- ────────────────────────────────────────────────────────────
 -- utilities
 -- ────────────────────────────────────────────────────────────
-hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs -c bar ipc call launcher toggle"), { description = "Launcher" })
+    hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs ipc call launcher toggle"), { description = "Launcher" })
 hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("qs -c bar ipc call powermenu toggle"), { description = "Power menu" })
 hl.bind("SUPER + SHIFT + SPACE", script("bar-toggle.sh"), { description = "Toggle top bar" })
 
