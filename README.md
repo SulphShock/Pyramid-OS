@@ -1,5 +1,3 @@
-cd ~/Pyramid-OS
-cat > README.md << 'EOF'
 # 🔺 Pyramid OS
 
 **Arch Linux • Hyprland • Solitude Theme • No Bloat**
@@ -107,4 +105,3 @@ MIT — See LICENSE file
 ---
 
 **Pyramid OS — Arch Linux, styled your way. ISO: 3.1GB. Version: 1.0.0-alpha**
-EOF
