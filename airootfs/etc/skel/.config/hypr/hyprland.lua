@@ -16,8 +16,8 @@ hl.config({
         gaps_out = 4,
         border_size = 2,
         col = {
-            active_border = "rgba(7aa2f7ff)",
-            inactive_border = "rgba(2a2f3dff)",
+            active_border = "rgba(e5e5e5ff)",
+            inactive_border = "rgba(3a3a3aff)",
         },
         layout = "dwindle",
         allow_tearing = false,
@@ -225,8 +225,8 @@ hl.bind("SUPER + ALT + SLASH", script("monitor-scaling.sh", "down"), { descripti
 -- ────────────────────────────────────────────────────────────
 -- utilities
 -- ────────────────────────────────────────────────────────────
-    hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs ipc call launcher toggle"), { description = "Launcher" })
-hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("qs ipc call powermenu toggle"), { description = "Power menu" })
+    hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("qs -c bar ipc call launcher toggle"), { description = "Launcher" })
+hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("qs -c bar ipc call powermenu toggle"), { description = "Power menu" })
 hl.bind("SUPER + SHIFT + SPACE", script("bar-toggle.sh"), { description = "Toggle top bar" })
 
 hl.bind("SUPER + CTRL + L", script("system-lock.sh"), { locked = true, description = "Lock system" })

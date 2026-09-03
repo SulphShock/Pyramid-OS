@@ -21,8 +21,3 @@ Thumbs.db
 *~
 # Calamares build temp
 calamares/build/
-
-# Private project context - never publish
-.context.md
-context.md
-Pyramid-os/.context.md
