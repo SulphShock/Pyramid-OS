@@ -14,6 +14,7 @@ arch-install-scripts
 grub
 efibootmgr
 os-prober
+syslinux
 mkinitcpio
 mkinitcpio-archiso
 amd-ucode
@@ -29,7 +30,7 @@ hyprland
 wayland
 wayland-protocols
 xorg-xwayland
-glfw-wayland
+glfw
 qt5-wayland
 qt6-wayland
 quickshell
@@ -68,7 +69,6 @@ foot
 ### === FILE MANAGER ===
 nautilus
 gnome-desktop
-tracker3-miners
 gvfs
 gvfs-mtp
 
@@ -85,10 +85,9 @@ micro
 htop
 btop
 fastfetch
-neofetch
 unzip
 zip
-p7zip
+7zip
 rsync
 tree
 jq
@@ -107,23 +106,15 @@ blueman
 
 ### === FONTS ===
 ttf-jetbrains-mono-nerd
-ttf-inter
+inter-font
 noto-fonts
 noto-fonts-emoji
-ttf-font-awesome
 otf-font-awesome
-ttf-noto-sans
 noto-fonts-cjk
 
 ### === ICONS & THEMES ===
 papirus-icon-theme
-arc-gtk-theme
 nwg-look
-
-### === INSTALLER ===
-calamares
-calamares-modules
-qt6-svg
 
 ### === SHELL ===
 zsh
@@ -142,7 +133,6 @@ xdg-desktop-portal-gtk
 hyprpaper
 hyprlock
 hypridle
-wlogout
 grim
 slurp
 swappy
